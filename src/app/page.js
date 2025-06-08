@@ -1,95 +1,57 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+
+import { useState, useEffect } from "react";
+import PokemonCard from "../components/pokemonCard";
+import RandomButton from "../components/randomButton";
 
 export default function Home() {
+  const [pokemonArray, setPokemonArray] = useState([]);
+  const [activePokemon, setActivePokemon] = useState(undefined);
+  // TODO: Create a new useState variable for randomPokemonNum
+  // The default value for this should be null
+
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
+      .then((res) => res.json())
+      .then((data) => setPokemonArray(data.results));
+  }, []);
+
+  useEffect(() => {
+    if (pokemonArray.length > 0) {
+      getPokemonDetails(0);
+    }
+  }, [pokemonArray]);
+
+  // TODO: Create a new useEffect call that has [randomPokemonNum] as the second parameter
+  // This will run the useEffect callback function whenever randomPokemonNum changes
+  // When the number changes, call getPokemonDetails(randomPokemonNum)
+  // Be sure check if getRandomNum is not null
+
+  // TODO: Fix this function
+  function setRandomPokemon() {
+    // should set the randomPokemonNum that you created to be equal to a number
+    // between 0 and the length of the pokemon array
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+    // Use that website to help you with the random logic.
+  }
+
+  function getPokemonDetails(index) {
+    fetch(pokemonArray[index].url)
+      .then((res) => res.json())
+      .then((data) => setActivePokemon(data));
+  }
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
+    <main>
+      {activePokemon ? (
         <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+          <PokemonCard pokemon={activePokemon} />
+          {/* TODO: Pass the setRandomPokemon function as a prop to RandomButton */}
+          <RandomButton />
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      ) : (
+        <div>Awaiting Results...</div>
+      )}
     </main>
   );
 }
