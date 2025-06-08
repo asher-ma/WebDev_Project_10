@@ -1,9 +1,6 @@
-// TODO: put props in the RandomButton function parameters
-// page.js should have passed in setRandomPokemon as a function
-
-export default function RandomButton() {
+export default function RandomButton(props) {
   function handleClick() {
-    // TODO: Simply call the setRandomFunction() that was passed in as a prop.
+    props.setRandomPokemon();
     console.log("clicked!");
   }
   return (

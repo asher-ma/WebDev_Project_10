@@ -7,7 +7,7 @@ import RandomButton from "../components/randomButton";
 export default function Home() {
   const [pokemonArray, setPokemonArray] = useState([]);
   const [activePokemon, setActivePokemon] = useState(undefined);
-  const [randomPokemonNum, setRandomPokemon] = useState(null);
+  const [randomPokemonNum, setRandomPokemonNum] = useState(null);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
@@ -28,7 +28,7 @@ export default function Home() {
   }, [randomPokemonNum]);
 
   function setRandomPokemon() {
-    randomPokemonNum = getRandomInt(pokemonArray.length)
+    setRandomPokemonNum(Math.floor(Math.random() * pokemonArray.length));
   }
 
   function getPokemonDetails(index) {
@@ -42,8 +42,7 @@ export default function Home() {
       {activePokemon ? (
         <div>
           <PokemonCard pokemon={activePokemon} />
-          {/* TODO: Pass the setRandomPokemon function as a prop to RandomButton */}
-          <RandomButton />
+          <RandomButton setRandomPokemon={setRandomPokemon}/>
         </div>
       ) : (
         <div>Awaiting Results...</div>
