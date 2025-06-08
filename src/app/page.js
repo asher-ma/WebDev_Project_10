@@ -7,8 +7,7 @@ import RandomButton from "../components/randomButton";
 export default function Home() {
   const [pokemonArray, setPokemonArray] = useState([]);
   const [activePokemon, setActivePokemon] = useState(undefined);
-  // TODO: Create a new useState variable for randomPokemonNum
-  // The default value for this should be null
+  const [randomPokemonNum, setRandomPokemonNum] = useState(null);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
@@ -22,10 +21,12 @@ export default function Home() {
     }
   }, [pokemonArray]);
 
-  // TODO: Create a new useEffect call that has [randomPokemonNum] as the second parameter
-  // This will run the useEffect callback function whenever randomPokemonNum changes
-  // When the number changes, call getPokemonDetails(randomPokemonNum)
-  // Be sure check if getRandomNum is not null
+  useEffect(() => {
+    if (randomPokemonNum != null) {
+      getPokemonDetails(randomPokemonNum)
+    }
+  }, [randomPokemonNum]);
+
 
   // TODO: Fix this function
   function setRandomPokemon() {
