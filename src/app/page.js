@@ -7,7 +7,7 @@ import RandomButton from "../components/randomButton";
 export default function Home() {
   const [pokemonArray, setPokemonArray] = useState([]);
   const [activePokemon, setActivePokemon] = useState(undefined);
-  const [randomPokemonNum, setRandomPokemonNum] = useState(null);
+  const [randomPokemonNum, setRandomPokemon] = useState(null);
 
   useEffect(() => {
     fetch("https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0")
@@ -27,13 +27,8 @@ export default function Home() {
     }
   }, [randomPokemonNum]);
 
-
-  // TODO: Fix this function
   function setRandomPokemon() {
-    // should set the randomPokemonNum that you created to be equal to a number
-    // between 0 and the length of the pokemon array
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-    // Use that website to help you with the random logic.
+    randomPokemonNum = getRandomInt(pokemonArray.length)
   }
 
   function getPokemonDetails(index) {
